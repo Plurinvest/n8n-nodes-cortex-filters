@@ -18,36 +18,45 @@ podem ser trocados em **Options**, caso você tenha alterado o config do Laravel
 
 ## Instalação no n8n
 
-Este pacote ainda não está no npm; instale direto do GitHub.
+Pacote no npm: [n8n-nodes-cortex-filters](https://www.npmjs.com/package/n8n-nodes-cortex-filters)
 
-### Opção 1 — n8n self-hosted (npm / Docker)
+### Opção 1 — pela interface (recomendado)
 
-Dentro da pasta de nodes customizados do n8n (`~/.n8n/nodes`; no Docker, `/home/node/.n8n/nodes`):
-
-```bash
-mkdir -p ~/.n8n/nodes && cd ~/.n8n/nodes
-npm install github:Plurinvest/n8n-nodes-cortex-filters
-```
-
-Reinicie o n8n. O node **Cortex Filters** aparece na busca de nodes.
-
-Exemplo com Docker Compose (o volume `n8n_data` precisa ser persistente):
-
-```bash
-docker compose exec n8n sh -c "mkdir -p /home/node/.n8n/nodes && cd /home/node/.n8n/nodes && npm install github:Plurinvest/n8n-nodes-cortex-filters"
-docker compose restart n8n
-```
-
-### Opção 2 — pela interface (Settings → Community Nodes)
-
-Só funciona para pacotes publicados no npm. Se o pacote for publicado
-(`npm publish`), use **Settings → Community Nodes → Install** e informe:
+1. No n8n, vá em **Settings → Community Nodes → Install**.
+2. Digite o nome do pacote:
 
 ```
 n8n-nodes-cortex-filters
 ```
 
+3. Marque a caixa de confirmação de risco e clique em **Install**.
+4. O node **Cortex Filters** aparece na busca de nodes.
+
+### Opção 2 — n8n self-hosted (npm / Docker)
+
+Dentro da pasta de nodes do n8n (`~/.n8n/nodes`; no Docker, `/home/node/.n8n/nodes`):
+
+```bash
+mkdir -p ~/.n8n/nodes && cd ~/.n8n/nodes
+npm install n8n-nodes-cortex-filters
+```
+
+Reinicie o n8n. No Docker, rode os mesmos comandos dentro do container (o volume precisa ser persistente):
+
+```bash
+docker compose exec n8n sh -c "mkdir -p /home/node/.n8n/nodes && cd /home/node/.n8n/nodes && npm install n8n-nodes-cortex-filters"
+docker compose restart n8n
+```
+
+### Instalar direto do GitHub (versão em desenvolvimento)
+
+```bash
+cd ~/.n8n/nodes && npm install github:Plurinvest/n8n-nodes-cortex-filters
+```
+
 ### Atualizar
+
+Pela interface: Settings → Community Nodes → Update. Ou:
 
 ```bash
 cd ~/.n8n/nodes && npm update n8n-nodes-cortex-filters
