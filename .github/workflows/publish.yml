@@ -24,7 +24,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - name: Bump patch if this version is already on npm
         id: version
