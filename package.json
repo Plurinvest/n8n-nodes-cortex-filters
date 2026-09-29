@@ -17,7 +17,7 @@
     "index.js"
   ],
   "scripts": {
-    "build": "tsc && cp nodes/CortexFilters/*.svg dist/nodes/CortexFilters/",
+    "build": "tsc && cp nodes/CortexFilters/*.png dist/nodes/CortexFilters/",
     "dev": "tsc --watch",
     "prepublishOnly": "npm run build"
   },

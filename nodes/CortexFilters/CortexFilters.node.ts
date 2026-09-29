@@ -22,7 +22,7 @@ export class CortexFilters implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Cortex Filters',
 		name: 'cortexFilters',
-		icon: 'file:cortexFilters.svg',
+		icon: 'file:cortexFilters.png',
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["method"] + " " + $parameter["endpoint"]}}',
