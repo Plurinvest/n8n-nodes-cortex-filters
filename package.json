@@ -1,0 +1,47 @@
+{
+  "name": "n8n-nodes-cortex-filters",
+  "version": "0.1.0",
+  "description": "n8n node: HTTP Request with first-class fields for spatie/laravel-query-builder (filter, include, sort, fields, append, pagination).",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "laravel",
+    "spatie",
+    "query-builder",
+    "http"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "dist",
+    "index.js"
+  ],
+  "scripts": {
+    "build": "tsc && cp nodes/CortexFilters/*.svg dist/nodes/CortexFilters/",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/CortexFiltersApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/CortexFilters/CortexFilters.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "n8n-workflow": "*",
+    "typescript": "^5.4.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Plurinvest/n8n-nodes-cortex-filters.git"
+  },
+  "homepage": "https://github.com/Plurinvest/n8n-nodes-cortex-filters#readme",
+  "author": "Plurinvest"
+}
