@@ -91,6 +91,13 @@ npm run build      # gera dist/ (que é versionado para permitir instalar via Gi
 
 Para testar localmente: `npm link` nesta pasta e `npm link n8n-nodes-cortex-filters` em `~/.n8n/nodes`.
 
+## Publicação automática
+
+Todo push na `main` dispara o workflow `.github/workflows/publish.yml`: ele compila, publica no npm e,
+se a versão do `package.json` já existir no npm, sobe o patch automaticamente (0.2.0 → 0.2.1) e
+commita a nova versão de volta. Para uma versão minor/major, altere o `version` no `package.json`
+antes do push. Requer o secret `NPM_TOKEN` no repositório (token granular com bypass de 2FA).
+
 ## Licença
 
 MIT
