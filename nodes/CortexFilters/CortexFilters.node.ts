@@ -427,6 +427,9 @@ export class CortexFilters implements INodeType {
 				const authType = cred?.authType as string | undefined;
 				if (authType === 'bearer' && cred?.token) headers.Authorization = `Bearer ${cred.token}`;
 				if (authType === 'header' && cred?.headerName) headers[String(cred.headerName)] = String(cred.headerValue ?? '');
+				if (authType === 'query' && cred?.queryValue) {
+					qs[String(cred.queryName || 'api_token')] = String(cred.queryValue);
+				}
 				const hs = (this.getNodeParameter('headers.items', i, []) as Row[]) ?? [];
 				for (const h of hs) {
 					if (String(h.name ?? '').trim()) headers[String(h.name).trim()] = String(h.value ?? '');

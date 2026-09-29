@@ -405,6 +405,9 @@ class CortexFilters {
                     headers.Authorization = `Bearer ${cred.token}`;
                 if (authType === 'header' && (cred === null || cred === void 0 ? void 0 : cred.headerName))
                     headers[String(cred.headerName)] = String((_m = cred.headerValue) !== null && _m !== void 0 ? _m : '');
+                if (authType === 'query' && (cred === null || cred === void 0 ? void 0 : cred.queryValue)) {
+                    qs[String(cred.queryName || 'api_token')] = String(cred.queryValue);
+                }
                 const hs = (_o = this.getNodeParameter('headers.items', i, [])) !== null && _o !== void 0 ? _o : [];
                 for (const h of hs) {
                     if (String((_p = h.name) !== null && _p !== void 0 ? _p : '').trim())

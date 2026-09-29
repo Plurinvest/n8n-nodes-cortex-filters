@@ -21,6 +21,7 @@ class CortexFiltersApi {
                 options: [
                     { name: 'Bearer Token', value: 'bearer' },
                     { name: 'Custom Header', value: 'header' },
+                    { name: 'Query Parameter (api_token)', value: 'query' },
                     { name: 'None', value: 'none' },
                 ],
                 default: 'bearer',
@@ -47,6 +48,22 @@ class CortexFiltersApi {
                 typeOptions: { password: true },
                 default: '',
                 displayOptions: { show: { authType: ['header'] } },
+            },
+            {
+                displayName: 'Parameter Name',
+                name: 'queryName',
+                type: 'string',
+                default: 'api_token',
+                displayOptions: { show: { authType: ['query'] } },
+            },
+            {
+                displayName: 'API Token',
+                name: 'queryValue',
+                type: 'string',
+                typeOptions: { password: true },
+                default: '',
+                description: 'Sent as ?api_token=… on every request',
+                displayOptions: { show: { authType: ['query'] } },
             },
         ];
         // Applied manually in the node (auth type is conditional), kept for credential UI consistency.

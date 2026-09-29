@@ -64,7 +64,7 @@ cd ~/.n8n/nodes && npm update n8n-nodes-cortex-filters
 
 ## Uso
 
-1. (Opcional) Crie a credencial **Cortex Filters API**: Base URL + Bearer token ou header customizado.
+1. (Opcional) Crie a credencial **Cortex Filters API**: Base URL + autenticação por **Query Parameter** (`?api_token=…`, o nome do parâmetro é editável), Bearer token ou header customizado.
 2. Adicione o node **Cortex Filters**, escolha o método e o endpoint (`/users`), ou uma URL completa.
 3. Preencha Filters / Includes / Sorts / Fields / Appends.
 4. Cada item de `data` na resposta vira um item de saída (mude em Options → Data Property).
