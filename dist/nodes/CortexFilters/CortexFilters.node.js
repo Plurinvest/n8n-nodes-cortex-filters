@@ -122,24 +122,25 @@ class CortexFilters {
                     ],
                 },
                 {
-                    displayName: 'Fields (Sparse Fieldsets)',
+                    displayName: 'Select Fields',
                     name: 'fields',
                     type: 'fixedCollection',
                     typeOptions: { multipleValues: true },
                     placeholder: 'Add Fieldset',
                     default: {},
-                    description: 'Becomes fields[table]=a,b',
+                    description: 'Limits the returned columns (allowedFields). Becomes fields[table]=a,b. Leave Table empty to use the main resource from the Endpoint (e.g. /leads → leads).',
                     options: [
                         {
                             name: 'items',
                             displayName: 'Fieldset',
                             values: [
                                 {
-                                    displayName: 'Resource / Table',
+                                    displayName: 'Table (Optional)',
                                     name: 'resource',
                                     type: 'string',
                                     default: '',
-                                    placeholder: 'users',
+                                    placeholder: 'empty = main resource from endpoint',
+                                    description: 'Model table name. Empty uses the last segment of the Endpoint (/leads → leads). For an included relation use its table, e.g. posts.',
                                 },
                                 {
                                     displayName: 'Fields',
@@ -338,7 +339,7 @@ class CortexFilters {
         };
     }
     async execute() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
         const items = this.getInputData();
         const out = [];
         let cred;
@@ -383,9 +384,15 @@ class CortexFilters {
                     .join(',');
                 if (sortStr)
                     qs[k('keySort', 'sort')] = sortStr;
-                const fields = (_g = this.getNodeParameter('fields.items', i, [])) !== null && _g !== void 0 ? _g : [];
+                const mainResource = (_g = endpoint
+                    .replace(/^https?:\/\/[^/]+/i, '')
+                    .split('?')[0]
+                    .split('/')
+                    .filter((seg) => seg && !/^(\d+|[0-9a-f-]{36})$/i.test(seg))
+                    .pop()) !== null && _g !== void 0 ? _g : '';
+                const fields = (_h = this.getNodeParameter('fields.items', i, [])) !== null && _h !== void 0 ? _h : [];
                 for (const f of fields) {
-                    const res = String((_h = f.resource) !== null && _h !== void 0 ? _h : '').trim();
+                    const res = String((_j = f.resource) !== null && _j !== void 0 ? _j : '').trim() || mainResource;
                     const cols = csv(f.columns);
                     if (res && cols)
                         qs[`${k('keyFields', 'fields')}[${res}]`] = cols;
@@ -393,10 +400,10 @@ class CortexFilters {
                 const appends = csv(this.getNodeParameter('appends', i, ''));
                 if (appends)
                     qs[k('keyAppend', 'append')] = appends;
-                const extra = (_j = this.getNodeParameter('extraQuery.items', i, [])) !== null && _j !== void 0 ? _j : [];
+                const extra = (_k = this.getNodeParameter('extraQuery.items', i, [])) !== null && _k !== void 0 ? _k : [];
                 for (const e of extra) {
-                    if (String((_k = e.name) !== null && _k !== void 0 ? _k : '').trim())
-                        qs[String(e.name).trim()] = String((_l = e.value) !== null && _l !== void 0 ? _l : '');
+                    if (String((_l = e.name) !== null && _l !== void 0 ? _l : '').trim())
+                        qs[String(e.name).trim()] = String((_m = e.value) !== null && _m !== void 0 ? _m : '');
                 }
                 // ----- headers / auth -----
                 const headers = { Accept: 'application/json' };
@@ -404,14 +411,14 @@ class CortexFilters {
                 if (authType === 'bearer' && (cred === null || cred === void 0 ? void 0 : cred.token))
                     headers.Authorization = `Bearer ${cred.token}`;
                 if (authType === 'header' && (cred === null || cred === void 0 ? void 0 : cred.headerName))
-                    headers[String(cred.headerName)] = String((_m = cred.headerValue) !== null && _m !== void 0 ? _m : '');
+                    headers[String(cred.headerName)] = String((_o = cred.headerValue) !== null && _o !== void 0 ? _o : '');
                 if (authType === 'query' && (cred === null || cred === void 0 ? void 0 : cred.queryValue)) {
                     qs[String(cred.queryName || 'api_token')] = String(cred.queryValue);
                 }
-                const hs = (_o = this.getNodeParameter('headers.items', i, [])) !== null && _o !== void 0 ? _o : [];
+                const hs = (_p = this.getNodeParameter('headers.items', i, [])) !== null && _p !== void 0 ? _p : [];
                 for (const h of hs) {
-                    if (String((_p = h.name) !== null && _p !== void 0 ? _p : '').trim())
-                        headers[String(h.name).trim()] = String((_q = h.value) !== null && _q !== void 0 ? _q : '');
+                    if (String((_q = h.name) !== null && _q !== void 0 ? _q : '').trim())
+                        headers[String(h.name).trim()] = String((_r = h.value) !== null && _r !== void 0 ? _r : '');
                 }
                 // ----- body -----
                 let body;
@@ -440,7 +447,7 @@ class CortexFilters {
                         req.body = body;
                     return (await this.helpers.httpRequest(req));
                 };
-                const dataProp = (_r = opts.dataProperty) !== null && _r !== void 0 ? _r : 'data';
+                const dataProp = (_s = opts.dataProperty) !== null && _s !== void 0 ? _s : 'data';
                 const full = !!opts.fullResponse;
                 const emit = (res) => {
                     if (full) {
@@ -484,11 +491,11 @@ class CortexFilters {
                             [k('keyPerPage', 'per_page')]: String(perPage),
                         });
                         emit(res);
-                        const b = ((_s = res.body) !== null && _s !== void 0 ? _s : {});
-                        const meta = ((_t = b.meta) !== null && _t !== void 0 ? _t : {});
-                        const links = ((_u = b.links) !== null && _u !== void 0 ? _u : {});
-                        const last = Number((_w = (_v = meta.last_page) !== null && _v !== void 0 ? _v : b.last_page) !== null && _w !== void 0 ? _w : 0);
-                        const hasNext = last ? page < last : !!((_x = links.next) !== null && _x !== void 0 ? _x : b.next_page_url);
+                        const b = ((_t = res.body) !== null && _t !== void 0 ? _t : {});
+                        const meta = ((_u = b.meta) !== null && _u !== void 0 ? _u : {});
+                        const links = ((_v = b.links) !== null && _v !== void 0 ? _v : {});
+                        const last = Number((_x = (_w = meta.last_page) !== null && _w !== void 0 ? _w : b.last_page) !== null && _x !== void 0 ? _x : 0);
+                        const hasNext = last ? page < last : !!((_y = links.next) !== null && _y !== void 0 ? _y : b.next_page_url);
                         if (!hasNext)
                             break;
                     }

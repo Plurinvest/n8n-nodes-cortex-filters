@@ -9,7 +9,7 @@ filters, includes, sorts, fields, appends e paginação, sem montar query string
 | Filters (nome, operador opcional, valor) | `filter[nome]=valor` · `filter[nome][op]=valor` |
 | Includes | `include=posts,posts.comments` |
 | Sorts (campo + asc/desc) | `sort=-created_at,name` |
-| Fields | `fields[users]=id,name` |
+| Select Fields (tabela opcional) | `fields[leads]=id,name` — sem tabela, usa o recurso do endpoint (`/leads` → `leads`) |
 | Appends | `append=full_name` |
 | Pagination (página única ou todas) | `page=1&per_page=50` |
 

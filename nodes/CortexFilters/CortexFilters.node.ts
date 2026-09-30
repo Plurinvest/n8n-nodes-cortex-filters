@@ -135,24 +135,27 @@ export class CortexFilters implements INodeType {
 				],
 			},
 			{
-				displayName: 'Fields (Sparse Fieldsets)',
+				displayName: 'Select Fields',
 				name: 'fields',
 				type: 'fixedCollection',
 				typeOptions: { multipleValues: true },
 				placeholder: 'Add Fieldset',
 				default: {},
-				description: 'Becomes fields[table]=a,b',
+				description:
+					'Limits the returned columns (allowedFields). Becomes fields[table]=a,b. Leave Table empty to use the main resource from the Endpoint (e.g. /leads → leads).',
 				options: [
 					{
 						name: 'items',
 						displayName: 'Fieldset',
 						values: [
 							{
-								displayName: 'Resource / Table',
+								displayName: 'Table (Optional)',
 								name: 'resource',
 								type: 'string',
 								default: '',
-								placeholder: 'users',
+								placeholder: 'empty = main resource from endpoint',
+								description:
+									'Model table name. Empty uses the last segment of the Endpoint (/leads → leads). For an included relation use its table, e.g. posts.',
 							},
 							{
 								displayName: 'Fields',
@@ -407,9 +410,16 @@ export class CortexFilters implements INodeType {
 					.join(',');
 				if (sortStr) qs[k('keySort', 'sort')] = sortStr;
 
+				const mainResource =
+					endpoint
+						.replace(/^https?:\/\/[^/]+/i, '')
+						.split('?')[0]
+						.split('/')
+						.filter((seg) => seg && !/^(\d+|[0-9a-f-]{36})$/i.test(seg))
+						.pop() ?? '';
 				const fields = (this.getNodeParameter('fields.items', i, []) as Row[]) ?? [];
 				for (const f of fields) {
-					const res = String(f.resource ?? '').trim();
+					const res = String(f.resource ?? '').trim() || mainResource;
 					const cols = csv(f.columns);
 					if (res && cols) qs[`${k('keyFields', 'fields')}[${res}]`] = cols;
 				}
