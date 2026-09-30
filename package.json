@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-cortex-filters",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "n8n node: HTTP Request with first-class fields for spatie/laravel-query-builder (filter, include, sort, fields, append, pagination).",
   "keywords": [
     "n8n-community-node-package",
